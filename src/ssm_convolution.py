@@ -1,6 +1,18 @@
 import jax.numpy as jnp
 
+
 def casual_convolve(u, K, fft=True):
+    """
+    Perform a casual convolution with or without FFTs on a signal using a kernel. FFTs are faster on long sequences.
+
+    Parameters:
+    - u: The input signal.
+    - K: The kernel.
+    - fft: Whether to use FFTs for convolution. Defaults to True.
+
+    Returns:
+    - The outputs of the SSM.
+    """
     if fft:
         # Here we want to make sure that both sequences can slide past each other without them overlapping.
         # To prevent convolution artifacts, we pad both sequences to be at least as long as the other.
@@ -11,4 +23,4 @@ def casual_convolve(u, K, fft=True):
         return jnp.fft.irfft(out)[: u.shape[0]]
     else:
         # We get rid of the results in the padded region
-        return jnp.convolve(u, K, mode='full')[: u.shape[0]]
+        return jnp.convolve(u, K, mode="full")[: u.shape[0]]

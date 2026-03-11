@@ -47,6 +47,10 @@ def scan_SSM(Ab, Bb, Cb, u, x0):
 
 # %% Run the SSM recurrently
 def run_ssm(Ab, Bb, Cb, u):
+    """
+    Literally just a wrapper for scan SSM that passes in an initial state. 
+    Keeping this because sometimes you don't want an initial state and I don't want to refactor my code.
+    """
     N = Ab.shape[0]
     return scan_SSM(Ab, Bb, Cb, u[:, jnp.newaxis], x0=jnp.zeros((N,)))[1]
 

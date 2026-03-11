@@ -50,6 +50,7 @@ def discretize(A, B, C, step):
 
 
 if __name__ == "__main__":
+    # Just a bit of a test script
     key = jrand.PRNGKey(0)
     A, B, C = random_ssm(key, N=6)
     ic(A, B, C)
