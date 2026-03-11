@@ -5,6 +5,6 @@
 TODO
 
 - [x] The Recurrent Representation of an SSM
-- [ ] The Naive Convolution Representation of an SSM
-- [ ] FFTs for SSM Convolution
+- [x] The Naive Convolution Representation of an SSM
+- [x] FFTs for SSM Convolution
 - [ ] S4

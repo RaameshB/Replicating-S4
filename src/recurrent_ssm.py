@@ -47,18 +47,19 @@ def scan_SSM(Ab, Bb, Cb, u, x0):
     return lax.scan(step, x0, u)
 
 # %% Run the SSM recurrently
-def run_ssm(A, B, C, u):
+def run_ssm(Ab, Bb, Cb, u):
     L = u.shape[0]
-    N = A.shape[0]
-    Ab, Bb, Cb = discretize(A, B, C, step=1.0/L)
+    N = Ab.shape[0]
     return scan_SSM(Ab, Bb, Cb, u[:, jnp.newaxis], x0=jnp.zeros((N,)))[1]
 
 # Test the Reccurent SSM
 if __name__ == "__main__":
     key = jrand.PRNGKey(0)
+    L = 15
     key, branch = jrand.split(key)
     A, B, C = init_ssm.random_ssm(branch, N=6)
     key, _ = jrand.split(key)
-    u = jrand.normal(key, (15,))
-    x = run_ssm(A, B, C, u)
+    u = jrand.normal(key, (L,))
+    Ab, Bb, Cb = discretize(A, B, C, step=1.0/L)
+    x = run_ssm(Ab, Bb, Cb, u)
     ic(x)
