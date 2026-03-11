@@ -1,8 +1,9 @@
 # %%
-import jax.random as jrand
 import jax.numpy as jnp
-from jax.numpy.linalg import eigh, inv, matrix_power
+import jax.random as jrand
 from icecream import ic
+from jax.numpy.linalg import inv
+
 
 # This gets us our weight parameters.
 def random_ssm(rng, N):
@@ -23,6 +24,7 @@ def random_ssm(rng, N):
     C = jrand.uniform(c_r, shape=(1, N))
     return A, B, C
 
+
 # The parameters we generate via random_ssm are for a continous-time SSM.
 # To discretize the SSM we use the bilinear method, as per the S4 paper.
 # (Note, most modern SSMs use Zero-Order Hold (ZOH) discretization.)
@@ -41,10 +43,11 @@ def discretize(A, B, C, step):
         Bb is the discretized input matrix ($\bar{B}$), and C is the output matrix ($\bar{C}$).
     """
     I = jnp.eye(A.shape[0])
-    BL = inv(I - (step/2.0) * A)
-    Ab = BL @ (I + (step/2.0) * A)
+    BL = inv(I - (step / 2.0) * A)
+    Ab = BL @ (I + (step / 2.0) * A)
     Bb = (BL * step) @ B
     return Ab, Bb, C
+
 
 if __name__ == "__main__":
     key = jrand.PRNGKey(0)
