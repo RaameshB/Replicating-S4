@@ -1,19 +1,15 @@
 ## Reccurent SSM
 # %% Imports
-from functools import partial
-import jax
-from jax import lax
-import jax.random as jrand
 import jax.numpy as jnp
-from flax import nnx
-from flax.nnx import initializers
-from jax.numpy.linalg import eigh, inv, matrix_power
-from jax.scipy.signal import convolve
-from init_ssm import discretize
-import init_ssm
+import jax.random as jrand
 from icecream import ic
+from jax import lax
+
+import init_ssm
+from init_ssm import discretize
 
 # %% The Recurrent Definition
+
 
 # This is the recurrent representation of the SSM.
 def scan_SSM(Ab, Bb, Cb, u, x0):
@@ -30,6 +26,7 @@ def scan_SSM(Ab, Bb, Cb, u, x0):
     Returns:
         A tuple of (x_k, y_k) where x_k is the state sequence and y_k is the output sequence.
     """
+
     def step(x_k_1, u_k):
         """
         Step function for the SSM.
@@ -44,13 +41,15 @@ def scan_SSM(Ab, Bb, Cb, u, x0):
         x_k = Ab @ x_k_1 + Bb @ u_k
         y_k = Cb @ x_k
         return x_k, y_k
+
     return lax.scan(step, x0, u)
+
 
 # %% Run the SSM recurrently
 def run_ssm(Ab, Bb, Cb, u):
-    L = u.shape[0]
     N = Ab.shape[0]
     return scan_SSM(Ab, Bb, Cb, u[:, jnp.newaxis], x0=jnp.zeros((N,)))[1]
+
 
 # Test the Reccurent SSM
 if __name__ == "__main__":
@@ -60,6 +59,6 @@ if __name__ == "__main__":
     A, B, C = init_ssm.random_ssm(branch, N=6)
     key, _ = jrand.split(key)
     u = jrand.normal(key, (L,))
-    Ab, Bb, Cb = discretize(A, B, C, step=1.0/L)
+    Ab, Bb, Cb = discretize(A, B, C, step=1.0 / L)
     x = run_ssm(Ab, Bb, Cb, u)
     ic(x)
