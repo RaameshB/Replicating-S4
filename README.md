@@ -1,6 +1,7 @@
 
 # Replicating-S4
-(Using the annotated S4 as a guide)
+Based off annotated S4, with some optimizations here and there.
+I'm also updating everything to the new flax nnx api instead of using the flax linen api.
 
 ## Setup instructions
 1. [Install uv if you haven't already](https://docs.astral.sh/uv/getting-started/installation/)
@@ -15,4 +16,5 @@
 - [x] The Recurrent Representation of an SSM
 - [x] The Naive Convolution Representation of an SSM
 - [x] FFTs for SSM Convolution
+- [ ] Training SSMs
 - [ ] S4
