@@ -1,7 +1,6 @@
 # %%
 import jax.numpy as jnp
 import jax.random as jrand
-from icecream import ic
 from jax.numpy.linalg import inv
 
 
@@ -49,8 +48,10 @@ def discretize(A, B, C, step):
     return Ab, Bb, C
 
 
-if __name__ == "__main__":
-    # Just a bit of a test script
-    key = jrand.PRNGKey(0)
-    A, B, C = random_ssm(key, N=6)
-    ic(A, B, C)
+def log_step_initializer(dt_min=0.001, dt_max=0.1):
+    """
+    This is sigificantly different than what's in the Annotated S4, but I feel like it is a better implementation of what they have
+    """
+    return lambda key, shape: jrand.uniform(
+        key, shape, minval=jnp.log(dt_min), maxval=jnp.log(dt_max)
+    )

@@ -1,9 +1,9 @@
 import jax.random as jrand
 
+from convolutional_ssm import casual_convolve
 from init_ssm import discretize, random_ssm
 from naive_kernel import naive_kernel
 from recurrent_ssm import run_ssm
-from ssm_convolution import casual_convolve
 
 
 def test_rnn():

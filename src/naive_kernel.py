@@ -1,9 +1,17 @@
+# %%
 import jax.numpy as jnp
-from jax.numpy.linalg import matrix_power
+from flax import nnx
+from jax import lax
+
+# %%
 
 
 def naive_kernel(Ab, Bb, Cb, L):
     """
-    A really bad way to generate a kernel for an SSM. Like come on, its not even parallel.
+    A (less) bad way to generate a kernel for an SSM. I made the implementation parallel because the provided one bothered me.
+    We shall use a better baseline to evaluate S4 against.
     """
-    return jnp.array([(Cb @ matrix_power(Ab, l) @ Bb).squeeze() for l in range(L)])
+    broadcasted = jnp.broadcast_to(Ab, (L - 1,) + Ab.shape)
+    concated = jnp.concat((jnp.eye(Ab.shape[0])[jnp.newaxis], broadcasted))
+    matrix_powers = lax.associative_scan(jnp.matmul, concated)
+    return nnx.vmap(lambda Abpower: (Cb @ Abpower @ Bb).squeeze())(matrix_powers)
