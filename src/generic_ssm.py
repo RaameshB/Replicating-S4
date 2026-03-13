@@ -31,7 +31,7 @@ class SSMLayer(nnx.Module):
             inp = inp[:, jnp.newaxis]
 
         outs = nnx.vmap(lambda unbatched:
-                nnx.vmap(SSMLayer.ssm, in_axes=(1, 0, 0, 0, 0, 0), out_axes=1)(unbatched, self.log_steps.value, self.As.value, self.Bs.value, self.Cs.value, self.Ds.value)
+                nnx.vmap(SSMLayer.ssm, in_axes=(1, 0, 0, 0, 0, 0), out_axes=1)(unbatched, self.log_steps[...], self.As[...], self.Bs[...], self.Cs[...], self.Ds[...])
             )(inp)
 
         if (unbatched):
