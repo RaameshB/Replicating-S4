@@ -17,4 +17,5 @@ I'm also updating everything to the new flax nnx api instead of using the flax l
 - [x] The Naive Convolution Representation of an SSM
 - [x] FFTs for SSM Convolution
 - [ ] Training SSMs
-- [ ] S4
+- [ ] S4 Kernel Generation
+- [ ] S4 nnx Module
